@@ -11,8 +11,8 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email:rfc,dns',
+            'password' => 'required|min:6',
         ]);
     
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
@@ -22,14 +22,14 @@ class LoginController extends Controller
             'message'=>'User login successfully.',
             'token'=>$token
         ]);
-        } 
+    }else{
         return response()->json([
             'success'=>false,
             'message'=>'email and password is incorrect', 
         ]);
-
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+    }
+        // throw ValidationException::withMessages([
+        //     'email' => ['The provided credentials are incorrect.'],
+        // ]);
     }
 }
