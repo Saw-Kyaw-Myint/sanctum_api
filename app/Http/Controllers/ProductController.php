@@ -14,6 +14,8 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    //store
     public function create(Request $request)
     {
         $request->validate([
@@ -39,6 +41,15 @@ class ProductController extends Controller
         }
     }
 
+    // edit
+    public function edit($id)
+    {
+        $product = Product::find($id);
+        
+        return response()->json($product);
+    }
+
+    //update
     public  function update(Request $request, $id)
     {
         $request->validate([
@@ -49,7 +60,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->title = $request->title;
         if ($request->file('image')) {
-            $imageName = time().'.'.$request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
             $request->file('file')->storeAs('uploads', $imageName, 'public');
             $data = [
                 'name' => $request->name,

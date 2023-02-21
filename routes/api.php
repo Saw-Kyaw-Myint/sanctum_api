@@ -27,7 +27,9 @@ Route::post('/register',[RegisterController::class,'register']);
 // Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/product', [ProductController::class, 'index'])->name('post');
     Route::post('product/create', [ProductController::class, 'create']);
-    Route::post('product/update/{id}', [ProductController::class, 'update']);
+    Route::post('product/update/{id}', [ProductController::class, 'update']);  
+    Route::get('product/{id}', [ProductController::class, 'edit']);
     Route::delete('product/{id}', [ProductController::class, 'destroy']);
+  
 // });
 
