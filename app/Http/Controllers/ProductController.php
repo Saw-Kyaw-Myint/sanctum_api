@@ -54,24 +54,28 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'image' => 'required|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'mimes:jpg,jpeg,png|nullable'
         ]);
+    
 
         $product = Product::find($id);
-        $product->title = $request->title;
-        if ($request->file('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->file('file')->storeAs('uploads', $imageName, 'public');
-            $data = [
-                'name' => $request->name,
-                'image' => $imageName,
-            ];
-            $product->update($data);
-
-            return response()->json([
-                'message' => 'New product updated'
-            ]);
+        if ($request->image!=null) {
+            $file_name = time() . '_update.' . $request->file('image')->extension();
+            $imageName = $request->file('image')->storeAs('uploads', $file_name, 'public');
+        }else{
+            $imageName=$product->image;
         }
+
+        $data = [
+            'name' => $request->name,
+            'image' => $imageName,
+        ];
+        info($data);
+        $product->update($data);
+
+        return response()->json([
+            'message' => 'New product updated'
+        ]);
     }
 
     public function destroy($id)
